@@ -11,7 +11,22 @@ class Game():
         }
     
     def play_game(self):
-        print('Welcome to TickyTackyToesy! Let\'s play!')
+        print('Welcome to TickyTackyToesy! Shall we play a game?')
+
+        while not self.winner and not self.tie:
+            self.print_board()
+            self.get_move()
+
+            if self.check_winner():
+                print(f'Player {self.winner} wins!')
+            elif self.check_tie():
+                print(f'It\'s a tie!')
+            else:
+                self.switch_turn()
+        
+        self.print_board()
+        print('Game over!')
+
 
     def print_board(self):
         b = self.board
@@ -47,13 +62,13 @@ class Game():
     
     def check_winner(self):
         winning_combos = [
-            ['a1', 'b1', 'c1']
-            ['a2', 'b2', 'c2']
-            ['a3', 'b3', 'c3']
-            ['a1', 'a2', 'a3']
-            ['b1', 'b2', 'b3']
-            ['c1', 'c2', 'c3']
-            ['a1', 'b2', 'c3']
+            ['a1', 'b1', 'c1'],
+            ['a2', 'b2', 'c2'],
+            ['a3', 'b3', 'c3'],
+            ['a1', 'a2', 'a3'],
+            ['b1', 'b2', 'b3'],
+            ['c1', 'c2', 'c3'],
+            ['a1', 'b2', 'c3'],
             ['a3', 'b2', 'c1']
         ]
         for combo in winning_combos:
@@ -64,7 +79,14 @@ class Game():
         return False
 
     def check_tie(self):
-        
+        if all(self.board[key] is not None for key in self.board.keys()) and not self.winner:
+            self.tie = True
+            return True
+        return False
+    
+    def switch_turn(self):
+        self.turn = 'O' if self.turn == 'X' else 'X'
+
 
     
 game_instance = Game()
@@ -74,6 +96,9 @@ game_instance = Game()
 game_instance.play_game()
 game_instance.get_move()
 game_instance.print_board()
+game_instance.check_winner()
+game_instance.check_tie()
+game_instance.switch_turn()
 
 
 
